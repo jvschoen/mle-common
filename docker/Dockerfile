@@ -22,6 +22,7 @@ RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 WORKDIR /home/developer
 ADD . src/
 RUN chown -R developer:developer src/
+WORKDIR /home/developer/src
 
 # Change to non-root privilege
 USER developer
