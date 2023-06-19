@@ -69,7 +69,7 @@ init:
 
 # Run test suite
 test: clean-pyc
-	py.test
+	pytest
 
 # Clean build artifacts
 clean: clean-build clean-pyc
