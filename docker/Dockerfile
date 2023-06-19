@@ -1,4 +1,4 @@
-FROM python:3.9.17-buster
+FROM databricksruntime/standard:12.2-LTS
 
 COPY requirements.txt /tmp/
 
