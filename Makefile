@@ -22,7 +22,7 @@ build:
 # 	docker build -f docker/Dockerfile . -t ${IMAGE_NAME}
 
 build_debug:
-	docker build -f docker/Dockerfile . \
+	docker build -f docker/Dockerfile \
 	-t ${IMAGE_NAME} --progress plain --no-cache \
 	-t $(IMAGE_NAME):$(VERSION) \
 	-t $(IMAGE_NAME):$(GIT_COMMIT) .
