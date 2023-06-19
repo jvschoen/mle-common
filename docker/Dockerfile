@@ -27,6 +27,8 @@ RUN chown -R developer:developer src/
 USER developer
 
 RUN git config --global --add safe.directory /home/developer/src
+RUN git config --global user.email "jvschoen@live.com"
+RUN git config --global user.name "Jesse Schoen"
 
 # Add user bin to PATH
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
