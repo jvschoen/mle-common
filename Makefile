@@ -87,13 +87,13 @@ release: release-git push-image
 
 release-git: current-branch
 	git checkout main
-	git pull origin main
+	yes | git pull origin main
 	git checkout -b release-branch
 	git merge $(cat current-branch)
 
 	bump2version ${bump_level}
-	git push
-	git push --tags
+	yes | git push --set-upstream origin release-branch
+	yes | git push --tags
 
 # Get the name of the current branch
 current-branch:
