@@ -13,14 +13,19 @@ GIT_COMMIT := $(shell git rev-parse --short HEAD)
 # BUILDING DOCKER IMAGE #
 #########################
 # Build Docker image with a specific version and latest Git commit hash
-build: update_env
-	docker build -t $(IMAGE_NAME):$(VERSION) -t $(IMAGE_NAME):$(GIT_COMMIT) .
-
 build:
-	docker build -f docker/Dockerfile . -t ${IMAGE_NAME}
+	docker build -f docker/Dockerfile \
+	-t $(IMAGE_NAME):$(VERSION) \
+	-t $(IMAGE_NAME):$(GIT_COMMIT) .
+
+# build:
+# 	docker build -f docker/Dockerfile . -t ${IMAGE_NAME}
 
 build_debug:
-	docker build -f docker/Dockerfile . -t ${IMAGE_NAME} --progress plain --no-cache
+	docker build -f docker/Dockerfile . \
+	-t ${IMAGE_NAME} --progress plain --no-cache \
+	-t $(IMAGE_NAME):$(VERSION) \
+	-t $(IMAGE_NAME):$(GIT_COMMIT) .
 
 run: build
 	docker run -v ~/.ssh:/home/developer/.ssh -d --name ${IMAGE_NAME} ${IMAGE_NAME}
