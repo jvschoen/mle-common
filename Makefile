@@ -28,7 +28,10 @@ build_debug:
 	-t $(IMAGE_NAME):$(GIT_COMMIT) .
 
 run: build
-	docker run -v ~/.ssh:/home/developer/.ssh -d --name ${IMAGE_NAME} ${IMAGE_NAME}
+	docker run -v ~/.ssh:/home/developer/.ssh \
+	-d \
+	--name ${IMAGE_NAME} \
+	${IMAGE_NAME}:$(VERSION)
 
 attach:
 	docker exec -it ${IMAGE_NAME} /bin/bash
