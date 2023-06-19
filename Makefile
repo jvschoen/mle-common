@@ -72,7 +72,7 @@ clean-pyc:
 	find . -name '__pycache__' -exec rm -fr {} +
 
 lint:
-	flake8 your_project_name tests
+	pylint my_package tests
 
 whl: clean
 	python setup.py bdist_wheel
