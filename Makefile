@@ -3,6 +3,8 @@ include docker/.env
 
 bump_level=minor
 
+release_num=unk
+
 # Extract the latest Git commit hash
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
 
@@ -101,7 +103,7 @@ whl: clean
 release-git: current-branch
 	git checkout main
 	yes | git pull origin main
-	git checkout -b release-branch
+	git checkout -b release-v$(release_num)
 	git merge $(cat current-branch)
 
 	bump2version ${bump_level}
