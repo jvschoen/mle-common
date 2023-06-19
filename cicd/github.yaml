@@ -5,7 +5,7 @@ steps:
 - name: Lint Code
   run: make lint
 - name: Build and Test
-  script: python setup.py bdist_wheel
+  script: make whl
 - name: Push to Proget PyPi
   # TODO: Where to get UN/Password? KeyVault?
   run: make release-whl
