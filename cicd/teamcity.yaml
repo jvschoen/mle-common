@@ -1,0 +1,13 @@
+steps:
+- name: Checkout Code
+  # TODO: Where to get CI_COMMIT_TAG, Makefile set env?
+  script: git checkout $CI_COMMIT_TAG
+- name: Lint Code
+  run: make lint
+- name: Build and Test
+  script: python setup.py bdist_wheel
+- name: Push to Proget PyPi
+  # TODO: Where to get UN/Password? KeyVault?
+  run: make release-whl
+- name: Push to Proget Docker
+  run: make release-image
