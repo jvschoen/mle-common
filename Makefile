@@ -9,6 +9,23 @@ GIT_COMMIT := $(shell git rev-parse --short HEAD)
 # Default 'make' action would be 'build'
 .DEFAULT_GOAL := build
 
+# ###########
+# Releasing #
+# ###########
+
+# TODO: Update proget server, and get UN PW
+release-code: release-git
+
+release-whl: whl
+	twine upload \
+	--repository-url https://your-proget-server \
+	--username $(USERNAME) \
+	--password $(PASSWORD) \
+	dist/*
+
+release-image: tag-latest push-image
+
+
 #########################
 # BUILDING DOCKER IMAGE #
 #########################
@@ -78,13 +95,9 @@ whl: clean
 	python setup.py bdist_wheel
 	ls -l dist
 
-
-# #################
-# RELEASE VERSION #
-# #################
-# Release both git and image versions
-release: release-git push-image
-
+# ######################
+# VERSION AND TAG CODE #
+# ######################
 release-git: current-branch
 	git checkout main
 	yes | git pull origin main
@@ -93,6 +106,7 @@ release-git: current-branch
 
 	bump2version ${bump_level}
 	yes | git push --set-upstream origin release-branch
+# This triggers the CICD
 	yes | git push --tags
 
 # Get the name of the current branch
