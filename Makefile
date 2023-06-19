@@ -21,7 +21,7 @@ build:
 # build:
 # 	docker build -f docker/Dockerfile . -t ${IMAGE_NAME}
 
-build_debug:
+build-debug:
 	docker build -f docker/Dockerfile \
 	-t ${IMAGE_NAME} --progress plain --no-cache \
 	-t $(IMAGE_NAME):$(VERSION) \
@@ -39,7 +39,7 @@ attach:
 stop:
 	docker stop ${IMAGE_NAME}
 
-cleanup_docker: stop
+cleanup-docker: stop
 	docker rm ${IMAGE_NAME}
 
 
@@ -83,9 +83,9 @@ whl: clean
 # RELEASE VERSION #
 # #################
 # Release both git and image versions
-release: release_git push_image
+release: release-git push-image
 
-release_git:
+release-git:
 	bump2version ${bump_level}
 	git push
 	git push --tags
@@ -94,17 +94,17 @@ release_git:
 # PUSHING DOCKER IMAGE #
 # ######################
 # Push the specific version, latest Git commit, and latest tag to the registry
-push_image: push_version push_git_commit push_latest
+push-image: push-version push-git-commit push-latest
 
-push_image_version:
+push-image-version:
 	docker push $(IMAGE_NAME):$(VERSION)
 
-push_image_git_commit:
+push-image-git-commit:
 	docker push $(IMAGE_NAME):$(GIT_COMMIT)
 
-push_image_latest:
+push-image-latest:
 	docker push $(IMAGE_NAME):latest
 
 # Tag the image with the 'latest' tag
-tag_latest:
+tag-latest:
 	docker tag $(IMAGE_NAME):$(VERSION) $(IMAGE_NAME):latest
