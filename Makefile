@@ -85,10 +85,19 @@ whl: clean
 # Release both git and image versions
 release: release-git push-image
 
-release-git:
+release-git: current-branch
+	git checkout main
+	git pull origin main
+	git checkout -b release-branch
+	git merge $(cat current-branch)
+
 	bump2version ${bump_level}
 	git push
 	git push --tags
+
+# Get the name of the current branch
+current-branch:
+	echo $(git rev-parse --abbrev-ref HEAD) > current-branch
 
 # ######################
 # PUSHING DOCKER IMAGE #
