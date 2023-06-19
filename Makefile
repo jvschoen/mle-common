@@ -108,7 +108,7 @@ release-git:
 
 	bump2version ${bump_level}
 # This triggers the CICD pipeline
-	yes | git push --set-upstream origin release-branch
+	yes | git push --set-upstream origin release-v$(new_version)
 # TODO: This should actually occur after the CI completes without failure
 	yes | git push --tags
 
