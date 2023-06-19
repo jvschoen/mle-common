@@ -17,3 +17,8 @@ Steps 3-5 above have been wrapped up in a `make release` command.
 The `make release` command goes a step further to kick off tagging and pushing
 docker images. That way we know we have a docker environment that runs the current commit
 of the code version.
+
+# Thoughts
+* I'd like to think of quarterly (minor) releases of our ML models
+    - Allowing for quick patches at the patch level.
+* Should have sprint-level releases of the common library
