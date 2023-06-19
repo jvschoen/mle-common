@@ -28,7 +28,9 @@ USER developer
 
 RUN git config --global --add safe.directory /home/developer/src
 
+# Add user bin to PATH
 RUN pip install --no-cache-dir -r /tmp/requirements.txt
+ENV PATH="/home/developer/.local/bin:${PATH}"
 
 # dummy cmd to keep container running
 CMD ["tail", "-f", "/dev/null"]
