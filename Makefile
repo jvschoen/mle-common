@@ -2,11 +2,11 @@
 include docker/.env
 
 bump_level=minor
-
-release_num=unk
+new_version=0.0.0
 
 # Extract the latest Git commit hash
 GIT_COMMIT := $(shell git rev-parse --short HEAD)
+current_branch := $(shell git rev-parse --abbrev-ref HEAD)
 
 # Default 'make' action would be 'build'
 .DEFAULT_GOAL := build
@@ -100,20 +100,16 @@ whl: clean
 # ######################
 # VERSION AND TAG CODE #
 # ######################
-release-git: current-branch
+release-git:
 	git checkout main
 	yes | git pull origin main
-	git checkout -b release-v$(release_num)
-	git merge $(cat current-branch)
+	git checkout -b release-v$(new_version)
+	git merge $(current_branch)
 
 	bump2version ${bump_level}
 	yes | git push --set-upstream origin release-branch
 # This triggers the CICD
 	yes | git push --tags
-
-# Get the name of the current branch
-current-branch:
-	echo $(git rev-parse --abbrev-ref HEAD) > current-branch
 
 # ######################
 # PUSHING DOCKER IMAGE #
