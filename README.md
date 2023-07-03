@@ -28,3 +28,6 @@ of the code version.
 * I'd like to think of quarterly (minor) releases of our ML models
     - Allowing for quick patches at the patch level.
 * Should have sprint-level releases of the common library
+
+# Common library
+https://lucid.app/lucidchart/2f0d13b5-b07e-432a-88c4-f90f27e84ba6/edit?beaconFlowId=1695AAF5F4E1FC5B&invitationId=inv_3540e1d4-b33c-4a30-89c6-6aa5a47ddc51&page=0_0#
