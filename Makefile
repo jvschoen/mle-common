@@ -46,14 +46,14 @@ build-debug:
 	-t $(IMAGE_NAME):$(VERSION) \
 	-t $(IMAGE_NAME):$(GIT_COMMIT) .
 
-run: build
+run:
 	docker run -v ~/.ssh:/home/developer/.ssh \
 	-d \
 	--name ${IMAGE_NAME} \
 	${IMAGE_NAME}:$(VERSION)
 
 attach:
-	docker exec -it ${IMAGE_NAME} /bin/bash
+	docker run -it ${IMAGE_NAME}:$(VERSION) /bin/bash
 
 stop:
 	docker stop ${IMAGE_NAME}
