@@ -1,39 +1,18 @@
-FROM python:3.9.17-buster
+FROM databricksruntime/standard:12.2-LTS
+ARG requirements_file=docker/requirements.txt
 
-SHELL ["/bin/bash", "-c"]
+# Avoids this layer from
+COPY ${requirements_file} /opt/mle-common/requirements.txt
 
-RUN apt-get update \
-    && apt-get -y install sudo
+WORKDIR /opt/mle-common/
 
-COPY requirements.txt /tmp/
+RUN /databricks/python3/bin/pip install --upgrade pip
+RUN /databricks/python3/bin/pip install -r requirements.txt
 
-COPY VERSION .
+COPY . /opt/mle-common
 
-# Create developer user
-RUN useradd -m developer \
-    && echo "developer:developer" | \
-    chpasswd && adduser developer sudo
+RUN /databricks/python3/bin/pip install -e ./
 
-# Give sudo no password
-RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
+EXPOSE 8888
 
-# Move the source folder into the container and
-# Give container user ownership
-WORKDIR /home/developer
-ADD . src/
-RUN chown -R developer:developer src/
-WORKDIR /home/developer/src
-
-# Change to non-root privilege
-USER developer
-
-RUN git config --global --add safe.directory /home/developer/src
-RUN git config --global user.email "jvschoen@live.com"
-RUN git config --global user.name "Jesse Schoen"
-
-# Add user bin to PATH
-RUN make init
-ENV PATH="/home/developer/.local/bin:${PATH}"
-
-# dummy cmd to keep container running
-CMD ["tail", "-f", "/dev/null"]
+CMD jupyter lab --ip=0.0.0.0 --port=8888 --no-browser --allow-root --NotebookApp.token=
