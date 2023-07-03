@@ -105,6 +105,7 @@ release-git:
 	yes | git pull origin main
 	git checkout -b release-v$(new_version)
 	git merge $(current_branch)
+# -- If Conflicts, then could break automation after above cmd --
 
 	bump2version ${bump_level}
 # This triggers the CICD pipeline
