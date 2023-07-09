@@ -1,0 +1,25 @@
+Setting up GCP sdk to work with Artifact Repostiry for Docker and python
+PREREQ
+* Get GCP sdk (google-cloud-cli-437.0.1-darwin-x86_64.tar.gz for mac)
+* ./google-cloud-sdk/install.sh
+* gcloud init
+* gcloud auth login
+
+1. Enable Artifact Repository:
+    `gcloud services enable artifactregistry.googleapis.com`
+2. Create Registry:
+    `gcloud artifacts repositories create my-repo --repository-format=docker --location=us-central1 --description="My Docker repository"`
+3. Enable Docker work with this repo:
+    `gcloud auth configure-docker us-west2-docker.pkg.dev`
+
+4. Tag image with repo:
+    `docker tag ml-platform:${VERSION} us-central1-docker.pkg.dev/website-jvschoen/jvs-docker/ml-platform:${VERSION}`
+
+5. Push image:
+    `docker push us-central1-docker.pkg.dev/website-jvschoen/jvs-docker/ml-platform:${VERSION}`
+
+
+NEXT STEPS:
+* push to repository
+* deploy to gcp compute instance
+    * https://chat.openai.com/c/e2a79da2-974c-4932-9375-a58958fe031a
