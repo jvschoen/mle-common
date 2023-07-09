@@ -1,0 +1,2 @@
+# Think of what can be ignored when built for prod. Otherwise the builds include entire repo for dev purposes
+Dockerfile
