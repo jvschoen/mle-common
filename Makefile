@@ -1,5 +1,5 @@
 #export BUILDKIT_PROGRESS=plain
-include docker/.env
+include .env
 
 bump_level=minor
 new_version=0.0.0
@@ -33,33 +33,40 @@ release-image: tag-latest push-image
 #########################
 # Build Docker image with a specific version and latest Git commit hash
 build:
-	docker build -f docker/Dockerfile \
-	-t $(IMAGE_NAME):$(VERSION) \
-	-t $(IMAGE_NAME):$(GIT_COMMIT) .
+	docker compose build
 
 # build:
 # 	docker build -f docker/Dockerfile . -t ${IMAGE_NAME}
 
 build-debug:
 	docker build -f docker/Dockerfile \
-	-t ${IMAGE_NAME} --progress plain --no-cache \
-	-t $(IMAGE_NAME):$(VERSION) \
-	-t $(IMAGE_NAME):$(GIT_COMMIT) .
+	--progress plain \
+	--no-cache
 
 run:
-	docker run -v ~/.ssh:/home/developer/.ssh \
-	-d \
-	--name ${IMAGE_NAME} \
-	${IMAGE_NAME}:$(VERSION)
+	docker compose up
 
 attach:
-	docker run -it ${IMAGE_NAME}:$(VERSION) /bin/bash
+#	docker run -it ${IMAGE_NAME}:$(VERSION) /bin/bash
+	docker compose up
+	docker compose exec ml-platform bash
 
 stop:
-	docker stop ${IMAGE_NAME}
+	docker compose stop
 
 cleanup-docker: stop
-	docker rm ${IMAGE_NAME}
+	docker compose rm
+
+volumes:
+	docker volume create ${DEV_VOLUME_NAME}
+	docker volume create ${SSH_KEY_VOLUME_NAME}
+
+ssh_key:
+	ssh-keygen -t rsa -b 4096 -f /tmp/id_rsa
+	docker run --rm -v ssh_keys:/keys -v /tmp:/host_keys alpine sh -c "cp /host_keys/id_rsa* /keys"
+	rm /tmp/id_rsa*
+
+
 
 
 # ##################
@@ -117,17 +124,18 @@ release-git:
 # PUSHING DOCKER IMAGE #
 # ######################
 # Push the specific version, latest Git commit, and latest tag to the registry
-push-image: push-version push-git-commit push-latest
+push-image: push-image-version #push-git-commit push-latest
 
-push-image-version:
-	docker push $(IMAGE_NAME):$(VERSION)
+push-image-version: tag-version
+	docker push $(DOCKER_REGISTRY_HOST)/${DOCKER_REPOSITORY}/${IMAGE_NAME}:${VERSION}
 
-push-image-git-commit:
-	docker push $(IMAGE_NAME):$(GIT_COMMIT)
+# push-image-git-commit:
+# 	docker push $(IMAGE_NAME):$(GIT_COMMIT)
 
-push-image-latest:
-	docker push $(IMAGE_NAME):latest
+# push-image-latest:
+# 	docker push $(IMAGE_NAME):latest
 
-# Tag the image with the 'latest' tag
-tag-latest:
-	docker tag $(IMAGE_NAME):$(VERSION) $(IMAGE_NAME):latest
+# Tag the image with the 'repo url base' and version
+tag-version:
+	docker tag ${DOCKER_REPOSITORY}/$(IMAGE_NAME):$(VERSION) \
+	$(DOCKER_REGISTRY_HOST)/${DOCKER_REPOSITORY}/${IMAGE_NAME}:${VERSION}

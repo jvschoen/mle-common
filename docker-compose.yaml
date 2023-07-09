@@ -1,0 +1,21 @@
+services:
+  ml-platform:
+    image: ${DOCKER_REPOSITORY}/${IMAGE_NAME}:${VERSION}
+    build:
+      context: .
+      dockerfile: docker/Dockerfile
+      args:
+        - username=${USERNAME}
+    ports:
+      - "8888:8888"
+    volumes:
+      # Store ssh key here since it persists
+      - local_dev:/home/${USERNAME}/dev
+    env_file:
+      - .env
+
+volumes:
+  local_dev:
+    external: True
+  ssh_keys:
+    external: True
