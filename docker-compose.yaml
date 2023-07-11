@@ -6,11 +6,14 @@ services:
       dockerfile: docker/Dockerfile
       args:
         - username=${USERNAME}
+        - commonlib=${COMMON_LIB_NAME}
     ports:
       - "8888:8888"
     volumes:
-      # Store ssh key here since it persists
+      # persist code local code repos and
       - local_dev:/home/${USERNAME}/dev
+      # Store ssh key here so it persists
+      - ssh_keys:/home/${USERNAME}/.ssh
     env_file:
       - .env
 

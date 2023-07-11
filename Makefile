@@ -61,13 +61,11 @@ volumes:
 	docker volume create ${DEV_VOLUME_NAME}
 	docker volume create ${SSH_KEY_VOLUME_NAME}
 
-ssh_key:
-	ssh-keygen -t rsa -b 4096 -f /tmp/id_rsa
-	docker run --rm -v ssh_keys:/keys -v /tmp:/host_keys alpine sh -c "cp /host_keys/id_rsa* /keys"
-	rm /tmp/id_rsa*
-
-
-
+# Create a ssh key in /tmp, then move to persistent volume for docker containers, then delete from host machine
+ssh-key:
+	ssh-keygen -t ed25519 -f /tmp/id_ed25519 -C "${USERNAME} Shared Docker Key"
+	docker run --rm -v ssh_keys:/keys -v /tmp:/host_keys alpine sh -c "cp /host_keys/id_ed25519* /keys"
+	rm /tmp/id_ed25519*
 
 # ##################
 # PYTHON PACKAGING #
