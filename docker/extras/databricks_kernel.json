@@ -1,0 +1,14 @@
+{
+    "argv": [
+     "/databricks/python3/bin/python",
+     "-m",
+     "ipykernel_launcher",
+     "-f",
+     "{connection_file}"
+    ],
+    "display_name": "databricks_env",
+    "language": "python",
+    "metadata": {
+     "debugger": true
+    }
+}

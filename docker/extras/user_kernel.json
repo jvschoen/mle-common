@@ -1,0 +1,14 @@
+{
+    "argv": [
+     "/jupyter/python3/bin/python",
+     "-m",
+     "ipykernel_launcher",
+     "-f",
+     "{connection_file}"
+    ],
+    "display_name": "user_env",
+    "language": "python",
+    "metadata": {
+     "debugger": true
+    }
+}
