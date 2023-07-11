@@ -4,6 +4,7 @@
 from abc import abstractmethod
 from mle_common.pipeline.table import Table
 
+
 class Ingestor:
     def __init__(self, table: Table):
         self.table = table

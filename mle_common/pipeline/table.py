@@ -3,7 +3,7 @@
 
 class Table:
     def __init__(self):
-        break
+        pass
 
 class DatabaseTable(Table):
     def __init__(self, database=None, schema=None, table=None):
