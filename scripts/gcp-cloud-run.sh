@@ -1,0 +1,1 @@
+gcloud run deploy mlplat-base --image us-west2-docker.pkg.dev/website-jvschoen/platml-docker/mlplatform:0.3.0
